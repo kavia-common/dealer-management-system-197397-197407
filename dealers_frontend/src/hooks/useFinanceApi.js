@@ -31,6 +31,12 @@ function normalizeFinanceSummary(payload) {
     },
 
     /**
+     * Optional per-dealer summary rows.
+     * Backend may provide this to let the dashboard validate balances without an extra call.
+     */
+    perDealer: Array.isArray(safe?.perDealer) ? safe.perDealer : [],
+
+    /**
      * For lightweight “sparkline” bar charts.
      * Expected: [{ label: "Mon", value: 1200 }, ...]
      */
