@@ -1,49 +1,49 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import AppLayout from "./components/AppLayout";
+
+import DealersPage from "./pages/DealersPage";
+import StockPage from "./pages/StockPage";
+import PayrollCreditsPage from "./pages/PayrollCreditsPage";
+import PaymentsPage from "./pages/PaymentsPage";
+import FinanceDashboardPage from "./pages/FinanceDashboardPage";
 
 // PUBLIC_INTERFACE
-function App() {
-  const [theme, setTheme] = useState('light');
-
-  // Effect to apply theme to document element
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
-
-  // PUBLIC_INTERFACE
-  const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
-  };
+export default function App() {
+  const location = useLocation();
+  const title = getTitleForPath(location.pathname);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <button 
-          className="theme-toggle" 
-          onClick={toggleTheme}
-          aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-        >
-          {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
-        </button>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <p>
-          Current theme: <strong>{theme}</strong>
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AppLayout title={title}>
+      <Routes>
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/dashboard" element={<FinanceDashboardPage />} />
+        <Route path="/dealers" element={<DealersPage />} />
+        <Route path="/stock" element={<StockPage />} />
+        <Route path="/payroll-credits" element={<PayrollCreditsPage />} />
+        <Route path="/payments" element={<PaymentsPage />} />
+        <Route
+          path="*"
+          element={<Navigate to="/dashboard" replace />}
+        />
+      </Routes>
+    </AppLayout>
   );
 }
 
-export default App;
+function getTitleForPath(pathname) {
+  switch (pathname) {
+    case "/dashboard":
+      return "Finance Dashboard";
+    case "/dealers":
+      return "Dealers";
+    case "/stock":
+      return "Stock";
+    case "/payroll-credits":
+      return "Payroll / Credits";
+    case "/payments":
+      return "Payments";
+    default:
+      return "Dealers Manager";
+  }
+}

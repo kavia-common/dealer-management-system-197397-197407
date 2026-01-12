@@ -1,0 +1,41 @@
+.pageCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 18px;
+  box-shadow: var(--shadow);
+  max-width: 920px;
+}
+
+.pageCard__badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #0f172a;
+  border: 1px solid rgba(59, 130, 246, 0.28);
+  background: rgba(59, 130, 246, 0.08);
+}
+
+.pageCard__title {
+  margin: 12px 0 6px 0;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+}
+
+.pageCard__desc {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.pageCard__note {
+  margin-top: 14px;
+  font-size: 13px;
+  padding: 12px 12px;
+  border-radius: 12px;
+  border: 1px dashed rgba(100, 116, 139, 0.35);
+  background: rgba(100, 116, 139, 0.06);
+  color: #0f172a;
+}
