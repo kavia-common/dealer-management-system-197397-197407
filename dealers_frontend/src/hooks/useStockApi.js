@@ -80,14 +80,45 @@ export function useStockList({ dealerId, q } = {}) {
 
 // PUBLIC_INTERFACE
 export function useCreateStockEntry() {
-  return useMutation("/stock", { method: "POST" });
+  const base = useMutation("/stock", { method: "POST" });
+
+  return {
+    ...base,
+    mutate: async (payload) => {
+      // Map UI payload -> backend schema.
+      const body = {
+        dealer_id: payload?.dealerId != null ? Number(payload.dealerId) : payload?.dealer_id,
+        item_name: payload?.itemName ?? payload?.item_name ?? "",
+        quantity: payload?.quantity,
+        unit_cost: payload?.unitCost ?? payload?.unit_cost,
+        stock_date: payload?.receivedDate ?? payload?.stock_date ?? null,
+        notes: payload?.notes ?? null,
+      };
+      return base.mutate(body);
+    },
+  };
 }
 
 // PUBLIC_INTERFACE
 export function useUpdateStockEntry(stockId) {
-  return useMutation(`/stock/${encodeURIComponent(String(stockId))}`, {
+  const base = useMutation(`/stock/${encodeURIComponent(String(stockId))}`, {
     method: "PUT",
   });
+
+  return {
+    ...base,
+    mutate: async (payload) => {
+      const body = {
+        dealer_id: payload?.dealerId != null ? Number(payload.dealerId) : payload?.dealer_id,
+        item_name: payload?.itemName ?? payload?.item_name ?? "",
+        quantity: payload?.quantity,
+        unit_cost: payload?.unitCost ?? payload?.unit_cost,
+        stock_date: payload?.receivedDate ?? payload?.stock_date ?? null,
+        notes: payload?.notes ?? null,
+      };
+      return base.mutate(body);
+    },
+  };
 }
 
 // PUBLIC_INTERFACE

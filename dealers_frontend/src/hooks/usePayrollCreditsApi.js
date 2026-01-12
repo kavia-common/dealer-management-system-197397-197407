@@ -151,14 +151,44 @@ export function usePayrollCreditsList({ dealerId, kind, status, from, to, q } = 
 
 // PUBLIC_INTERFACE
 export function useCreatePayrollCredit() {
-  return useMutation("/payroll-credits", { method: "POST" });
+  const base = useMutation("/payroll-credits", { method: "POST" });
+
+  return {
+    ...base,
+    mutate: async (payload) => {
+      const kind = String(payload?.kind ?? payload?.txn_type ?? "CREDIT").toUpperCase();
+      const body = {
+        dealer_id: payload?.dealerId != null ? Number(payload.dealerId) : payload?.dealer_id,
+        txn_type: kind === "PAYROLL" ? "PAYROLL" : "CREDIT",
+        amount: payload?.amount,
+        credit_date: payload?.effectiveDate ?? payload?.credit_date ?? null,
+        description: payload?.notes ?? payload?.description ?? null,
+      };
+      return base.mutate(body);
+    },
+  };
 }
 
 // PUBLIC_INTERFACE
 export function useUpdatePayrollCredit(entryId) {
-  return useMutation(`/payroll-credits/${encodeURIComponent(String(entryId))}`, {
+  const base = useMutation(`/payroll-credits/${encodeURIComponent(String(entryId))}`, {
     method: "PUT",
   });
+
+  return {
+    ...base,
+    mutate: async (payload) => {
+      const kind = String(payload?.kind ?? payload?.txn_type ?? "CREDIT").toUpperCase();
+      const body = {
+        dealer_id: payload?.dealerId != null ? Number(payload.dealerId) : payload?.dealer_id,
+        txn_type: kind === "PAYROLL" ? "PAYROLL" : "CREDIT",
+        amount: payload?.amount,
+        credit_date: payload?.effectiveDate ?? payload?.credit_date ?? null,
+        description: payload?.notes ?? payload?.description ?? null,
+      };
+      return base.mutate(body);
+    },
+  };
 }
 
 // PUBLIC_INTERFACE

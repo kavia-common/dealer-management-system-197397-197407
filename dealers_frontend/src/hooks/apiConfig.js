@@ -1,4 +1,4 @@
-const DEFAULT_API_BASE = "http://localhost:3001/api";
+const DEFAULT_API_BASE = "http://localhost:8001/api";
 
 /**
  * Returns backend API base URL used by all hooks.
