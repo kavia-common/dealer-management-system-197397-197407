@@ -1,18 +1,21 @@
-const DEFAULT_API_BASE = "http://localhost:3001";
+const DEFAULT_API_BASE = "http://localhost:3001/api";
 
 /**
- * Returns backend API base URL.
+ * Returns backend API base URL used by all hooks.
  *
- * Uses CRA env vars when present, otherwise falls back to localhost for dev.
+ * The hooks in this app call endpoints like "/dealers", "/stock", etc.
+ * To keep those stable, the resolved base URL MUST include the "/api" prefix.
  *
  * Priority:
- * 1) REACT_APP_API_BASE
- * 2) REACT_APP_BACKEND_URL
- * 3) http://localhost:3001
+ * 1) REACT_APP_API_BASE_URL
+ * 2) (legacy) REACT_APP_API_BASE
+ * 3) (legacy) REACT_APP_BACKEND_URL
+ * 4) http://localhost:3001/api
  */
 // PUBLIC_INTERFACE
 export function getApiBaseUrl() {
   const fromEnv =
+    (process.env.REACT_APP_API_BASE_URL || "").trim() ||
     (process.env.REACT_APP_API_BASE || "").trim() ||
     (process.env.REACT_APP_BACKEND_URL || "").trim();
 
